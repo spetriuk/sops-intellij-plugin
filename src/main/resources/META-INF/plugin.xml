@@ -1,0 +1,23 @@
+<idea-plugin>
+    <id>com.petriuk.sops-intellij-plugin</id>
+    <name>Sops Support</name>
+    <vendor email="spetriuk@ukr.net" url="https://github.com/spetriuk">Serhii Petriuk</vendor>
+    <description>Encrypt and decrypt files using sops utility</description>
+    <depends>com.intellij.modules.platform</depends>
+    <extensions defaultExtensionNs="com.intellij"/>
+    <actions>
+        <group id="org.intellij.sdk.action.GroupedActions" text="SOPS" popup="true">
+            <action id="com.petriuk.sopsintellijplugin.DecryptAction"
+                    class="com.petriuk.sopsintellijplugin.DecryptAction"
+                    text="Decrypt with Sops"
+                    description="Decrypt file using sops">
+            </action>
+            <action id="com.petriuk.sopsintellijplugin.EncryptAction"
+                    class="com.petriuk.sopsintellijplugin.EncryptAction"
+                    text="Encrypt with Sops"
+                    description="Encrypt file using sops">
+            </action>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </group>
+    </actions>
+</idea-plugin>
