@@ -1,5 +1,7 @@
 # sops-intellij-plugin
 
+![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white) ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white) [![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE)
+
 ### About
 The simple plugin for Intellij Idea IDE for files encryption using [sops](https://github.com/mozilla/sops).
 
