@@ -20,4 +20,11 @@
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </group>
     </actions>
+    <change-notes><![CDATA[
+<h2>Updates</h2>
+<ul>
+  <li>Added .sops.yaml configuration file support</li>
+  <li>IDE version support has been updated to version 223</li>
+</ul>
+]]></change-notes>
 </idea-plugin>

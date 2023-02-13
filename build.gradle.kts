@@ -1,11 +1,11 @@
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.6.0"
+    id("org.jetbrains.intellij") version "1.13.0"
     id("io.freefair.lombok") version "6.5.1"
 }
 
 group = "com.petriuk"
-version = "1.1.0-alpha"
+version = "1.1.3-alpha"
 
 repositories {
     mavenCentral()
@@ -14,7 +14,7 @@ repositories {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2022.2")
+    version.set("2022.3")
     type.set("IU") // Target IDE Platform
 
     plugins.set(listOf(/* Plugin Dependencies */))
@@ -23,8 +23,8 @@ intellij {
 tasks {
     // Set the JVM compatibility versions
     withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
     }
 
     patchPluginXml {
