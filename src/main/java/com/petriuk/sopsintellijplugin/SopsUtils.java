@@ -29,7 +29,11 @@ public class SopsUtils {
   @SneakyThrows
   private static void execute(String actionParam, VirtualFile file) {
     var command = new GeneralCommandLine(SOPS_COMMAND);
-    command.addParameters(actionParam, "-i", file.getPath());
+    var path = file.getParent();
+    if (path != null) {
+      command.setWorkDirectory(path.getPath());
+    }
+    command.addParameters(actionParam, "-i", file.getName());
     command.setCharset(StandardCharsets.UTF_8);
 
     var processHandler = new OSProcessHandler(command);
