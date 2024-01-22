@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.petriuk"
-version = "1.1.3-alpha"
+version = "1.1.4-alpha"
 
 repositories {
     mavenCentral()
@@ -29,6 +29,7 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("145")
+        untilBuild.set("")
     }
 
     signPlugin {
