@@ -4,16 +4,24 @@
     <vendor email="spetriuk@ukr.net" url="https://github.com/spetriuk">Serhii Petriuk</vendor>
     <description>Encrypt and decrypt files using sops utility</description>
     <depends>com.intellij.modules.platform</depends>
-    <extensions defaultExtensionNs="com.intellij"/>
+    <extensions defaultExtensionNs="com.intellij">
+        <projectConfigurable
+                parentId="tools"
+                instance="com.petriuk.sopsintellijplugin.configurable.SopsSettingsConfigurable"
+                id="com.example.ApplicationSettingsConfigurable"
+                displayName="SOPS Settings"
+                nonDefaultProject="true"/>
+        <applicationService serviceImplementation="com.petriuk.sopsintellijplugin.state.SopsSettingsState"/>
+    </extensions>
     <actions>
         <group id="org.intellij.sdk.action.GroupedActions" text="SOPS" popup="true">
-            <action id="com.petriuk.sopsintellijplugin.DecryptAction"
-                    class="com.petriuk.sopsintellijplugin.DecryptAction"
+            <action id="com.petriuk.sopsintellijplugin.actions.DecryptAction"
+                    class="com.petriuk.sopsintellijplugin.actions.DecryptAction"
                     text="Decrypt with Sops"
                     description="Decrypt file using sops">
             </action>
-            <action id="com.petriuk.sopsintellijplugin.EncryptAction"
-                    class="com.petriuk.sopsintellijplugin.EncryptAction"
+            <action id="com.petriuk.sopsintellijplugin.actions.EncryptAction"
+                    class="com.petriuk.sopsintellijplugin.actions.EncryptAction"
                     text="Encrypt with Sops"
                     description="Encrypt file using sops">
             </action>
@@ -23,8 +31,7 @@
     <change-notes><![CDATA[
 <h2>Updates</h2>
 <ul>
-  <li>Added .sops.yaml configuration file support</li>
-  <li>IDE version support has been updated to version 223</li>
+  <li>Make plugin forward compatible with new versions</li>
 </ul>
 ]]></change-notes>
 </idea-plugin>

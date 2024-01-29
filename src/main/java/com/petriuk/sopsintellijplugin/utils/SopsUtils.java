@@ -1,6 +1,7 @@
-package com.petriuk.sopsintellijplugin;
+package com.petriuk.sopsintellijplugin.utils;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.OSProcessHandler;
@@ -8,6 +9,7 @@ import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.petriuk.sopsintellijplugin.state.SopsSettingsState;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.NotNull;
@@ -15,8 +17,9 @@ import org.jetbrains.annotations.NotNull;
 @UtilityClass
 public class SopsUtils {
   private static final String SOPS_COMMAND = "sops";
-  public static final String ENCRYPT_PARAM = "-e";
-  public static final String DECRYPT_PARAM = "-d";
+  private static final String ENCRYPT_PARAM = "-e";
+  private static final String DECRYPT_PARAM = "-d";
+  private static final String AWS_PROFILE_PARAM = "--aws-profile";
 
   public static void encrypt(VirtualFile file) {
     execute(ENCRYPT_PARAM, file);
@@ -28,12 +31,17 @@ public class SopsUtils {
 
   @SneakyThrows
   private static void execute(String actionParam, VirtualFile file) {
+    var sopsSettingsState = SopsSettingsState.getInstance();
+
     var command = new GeneralCommandLine(SOPS_COMMAND);
     var path = file.getParent();
     if (path != null) {
       command.setWorkDirectory(path.getPath());
     }
     command.addParameters(actionParam, "-i", file.getName());
+    Optional.ofNullable(sopsSettingsState.getAwsProfile()).ifPresent(
+        profile -> command.addParameters(AWS_PROFILE_PARAM, profile)
+    );
     command.setCharset(StandardCharsets.UTF_8);
 
     var processHandler = new OSProcessHandler(command);
