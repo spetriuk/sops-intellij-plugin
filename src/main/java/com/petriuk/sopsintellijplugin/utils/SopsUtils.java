@@ -7,6 +7,7 @@ import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessAdapter;
 import com.intellij.execution.process.ProcessEvent;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.petriuk.sopsintellijplugin.state.SopsSettingsState;
@@ -21,17 +22,17 @@ public class SopsUtils {
   private static final String DECRYPT_PARAM = "-d";
   private static final String AWS_PROFILE_PARAM = "--aws-profile";
 
-  public static void encrypt(VirtualFile file) {
-    execute(ENCRYPT_PARAM, file);
+  public static void encrypt(VirtualFile file, Project project) {
+    execute(ENCRYPT_PARAM, file, project);
   }
 
-  public static void decrypt(VirtualFile file) {
-    execute(DECRYPT_PARAM, file);
+  public static void decrypt(VirtualFile file, Project project) {
+    execute(DECRYPT_PARAM, file, project);
   }
 
   @SneakyThrows
-  private static void execute(String actionParam, VirtualFile file) {
-    var sopsSettingsState = SopsSettingsState.getInstance();
+  private static void execute(String actionParam, VirtualFile file, Project project) {
+    var sopsSettingsState = SopsSettingsState.getInstance(project);
 
     var command = new GeneralCommandLine(SOPS_COMMAND);
     var path = file.getParent();

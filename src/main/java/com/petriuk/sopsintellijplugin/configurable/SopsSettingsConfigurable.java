@@ -13,6 +13,9 @@ import com.petriuk.sopsintellijplugin.state.SopsSettingsState;
 import com.petriuk.sopsintellijplugin.utils.AwsUtils;
 
 public class SopsSettingsConfigurable implements Configurable {
+  public static final String AWS_PROFILES_FETCH_PROGRESS_LABEL = "Fetching AWS profiles";
+  public static final String SOPS_SETTINGS_LABEL = "SOPS Settings";
+
   private final Project project;
   private SopsSettingsComponent component;
 
@@ -22,7 +25,7 @@ public class SopsSettingsConfigurable implements Configurable {
 
   @Override
   public String getDisplayName() {
-    return "SOPS Settings";
+    return SOPS_SETTINGS_LABEL;
   }
 
   @Override
@@ -35,7 +38,7 @@ public class SopsSettingsConfigurable implements Configurable {
 
   @Override
   public boolean isModified() {
-    var sopsSettingsState = SopsSettingsState.getInstance();
+    var sopsSettingsState = SopsSettingsState.getInstance(project);
     var selected = component.getSelectedAwsProfile();
 
     return !Objects.equals(selected, sopsSettingsState.getAwsProfile());
@@ -43,7 +46,7 @@ public class SopsSettingsConfigurable implements Configurable {
 
   @Override
   public void apply() {
-    var sopsSettingsState = SopsSettingsState.getInstance();
+    var sopsSettingsState = SopsSettingsState.getInstance(project);
 
     var selected = component.getSelectedAwsProfile();
     sopsSettingsState.setAwsProfile(selected);
@@ -51,12 +54,12 @@ public class SopsSettingsConfigurable implements Configurable {
 
   @Override
   public void reset() {
-    var sopsSettingsState = SopsSettingsState.getInstance();
+    var sopsSettingsState = SopsSettingsState.getInstance(project);
     component.setSelectedAwsProfile(sopsSettingsState.getAwsProfile());
   }
 
   private void fetchAwsProfiles() {
-    var task = new Task.Backgroundable(project, "Fetching AWS profiles") {
+    var task = new Task.Backgroundable(project, AWS_PROFILES_FETCH_PROGRESS_LABEL) {
       List<String> fetchedProfiles = new ArrayList<>();
 
       @Override
@@ -66,7 +69,7 @@ public class SopsSettingsConfigurable implements Configurable {
 
       @Override
       public void onSuccess() {
-        var sopsSettingsState = SopsSettingsState.getInstance();
+        var sopsSettingsState = SopsSettingsState.getInstance(project);
 
         component.setAwsProfiles(fetchedProfiles);
 
@@ -77,6 +80,4 @@ public class SopsSettingsConfigurable implements Configurable {
     };
     task.queue();
   }
-
-
 }

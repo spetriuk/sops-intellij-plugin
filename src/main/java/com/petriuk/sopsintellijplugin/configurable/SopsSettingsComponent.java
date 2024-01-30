@@ -17,8 +17,8 @@ import com.intellij.ui.CollectionComboBoxModel;
 import com.intellij.ui.TitledSeparator;
 
 public class SopsSettingsComponent {
-  private static final String AWS_PROFILE_LABEL = "AWS profile";
   private static final JPanel AWS_SETTINGS_SECTION_SEPARATOR = new TitledSeparator("AWS Settings");
+  private static final String AWS_PROFILE_LABEL = "AWS profile:";
 
   private final JPanel contentPanel;
   private final ComboBox<String> profilesComboBox = new ComboBox<>(new CollectionComboBoxModel<>(emptyList()));

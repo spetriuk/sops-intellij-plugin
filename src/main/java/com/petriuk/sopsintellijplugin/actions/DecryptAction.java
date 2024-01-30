@@ -11,7 +11,7 @@ public class DecryptAction extends AnAction {
   @Override
   public void actionPerformed(@NotNull AnActionEvent e) {
     var file = e.getData(PlatformDataKeys.VIRTUAL_FILE);
-    SopsUtils.decrypt(file);
+    SopsUtils.decrypt(file, e.getProject());
   }
 
   @Override

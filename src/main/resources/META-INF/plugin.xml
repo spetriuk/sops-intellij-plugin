@@ -11,7 +11,6 @@
                 id="com.example.ApplicationSettingsConfigurable"
                 displayName="SOPS Settings"
                 nonDefaultProject="true"/>
-        <applicationService serviceImplementation="com.petriuk.sopsintellijplugin.state.SopsSettingsState"/>
     </extensions>
     <actions>
         <group id="org.intellij.sdk.action.GroupedActions" text="SOPS" popup="true">
@@ -31,7 +30,7 @@
     <change-notes><![CDATA[
 <h2>Updates</h2>
 <ul>
-  <li>Make plugin forward compatible with new versions</li>
+  <li>Added AWS profile settings</li>
 </ul>
 ]]></change-notes>
 </idea-plugin>

@@ -11,7 +11,7 @@ public class EncryptAction extends AnAction {
   @Override
   public void actionPerformed(@NotNull AnActionEvent e) {
     var file = e.getData(PlatformDataKeys.VIRTUAL_FILE);
-    SopsUtils.encrypt(file);
+    SopsUtils.encrypt(file, e.getProject());
   }
 
   @Override
