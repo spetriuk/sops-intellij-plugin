@@ -1,16 +1,21 @@
 package com.petriuk.sopsintellijplugin.configurable;
 
+import static java.util.Collections.emptyList;
+
+import static org.apache.commons.lang3.ObjectUtils.notEqual;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javax.swing.JComponent;
 
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
+import com.petriuk.sopsintellijplugin.components.SopsSettingsComponent;
 import com.petriuk.sopsintellijplugin.state.SopsSettingsState;
 import com.petriuk.sopsintellijplugin.utils.AwsUtils;
+import org.jetbrains.annotations.NotNull;
 
 public class SopsSettingsConfigurable implements Configurable {
   public static final String AWS_PROFILES_FETCH_PROGRESS_LABEL = "Fetching AWS profiles";
@@ -41,15 +46,13 @@ public class SopsSettingsConfigurable implements Configurable {
     var sopsSettingsState = SopsSettingsState.getInstance(project);
     var selected = component.getSelectedAwsProfile();
 
-    return !Objects.equals(selected, sopsSettingsState.getAwsProfile());
+    return notEqual(selected, sopsSettingsState.getAwsProfile());
   }
 
   @Override
   public void apply() {
     var sopsSettingsState = SopsSettingsState.getInstance(project);
-
-    var selected = component.getSelectedAwsProfile();
-    sopsSettingsState.setAwsProfile(selected);
+    sopsSettingsState.setAwsProfile(component.getSelectedAwsProfile());
   }
 
   @Override
@@ -63,7 +66,7 @@ public class SopsSettingsConfigurable implements Configurable {
       List<String> fetchedProfiles = new ArrayList<>();
 
       @Override
-      public void run(ProgressIndicator indicator) {
+      public void run(@NotNull ProgressIndicator indicator) {
         this.fetchedProfiles = AwsUtils.getAwsProfiles();
       }
 
@@ -76,6 +79,11 @@ public class SopsSettingsConfigurable implements Configurable {
         if (fetchedProfiles.contains(sopsSettingsState.getAwsProfile())) {
           component.setSelectedAwsProfile(sopsSettingsState.getAwsProfile());
         }
+      }
+
+      @Override
+      public void onThrowable(@NotNull Throwable error) {
+        component.setAwsProfiles(emptyList());
       }
     };
     task.queue();

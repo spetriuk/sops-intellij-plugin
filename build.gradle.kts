@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.petriuk"
-version = "1.1.4-alpha"
+version = "1.2.0-alpha"
 
 repositories {
     mavenCentral()

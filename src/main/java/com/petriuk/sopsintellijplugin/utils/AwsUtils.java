@@ -1,7 +1,8 @@
 package com.petriuk.sopsintellijplugin.utils;
 
+import static java.util.Collections.emptyList;
+
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +29,6 @@ public class AwsUtils {
         .map(String::trim)
         .map(string -> string.split("\n"))
         .map(Arrays::asList)
-        .orElse(Collections.emptyList());
+        .orElse(emptyList());
   }
 }

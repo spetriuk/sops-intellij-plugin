@@ -1,6 +1,8 @@
 package com.petriuk.sopsintellijplugin.utils;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import com.intellij.execution.configurations.GeneralCommandLine;
@@ -20,7 +22,7 @@ public class SopsUtils {
   private static final String SOPS_COMMAND = "sops";
   private static final String ENCRYPT_PARAM = "-e";
   private static final String DECRYPT_PARAM = "-d";
-  private static final String AWS_PROFILE_PARAM = "--aws-profile";
+  public static final String AWS_PROFILE_ENV = "AWS_PROFILE";
 
   public static void encrypt(VirtualFile file, Project project) {
     execute(ENCRYPT_PARAM, file, project);
@@ -32,18 +34,14 @@ public class SopsUtils {
 
   @SneakyThrows
   private static void execute(String actionParam, VirtualFile file, Project project) {
-    var sopsSettingsState = SopsSettingsState.getInstance(project);
-
     var command = new GeneralCommandLine(SOPS_COMMAND);
     var path = file.getParent();
     if (path != null) {
       command.setWorkDirectory(path.getPath());
     }
     command.addParameters(actionParam, "-i", file.getName());
-    Optional.ofNullable(sopsSettingsState.getAwsProfile()).ifPresent(
-        profile -> command.addParameters(AWS_PROFILE_PARAM, profile)
-    );
     command.setCharset(StandardCharsets.UTF_8);
+    command.getEnvironment().putAll(getEnvironmentVariables(project));
 
     var processHandler = new OSProcessHandler(command);
     processHandler.startNotify();
@@ -54,5 +52,16 @@ public class SopsUtils {
         VfsUtil.markDirtyAndRefresh(false, false, false, file);
       }
     });
+  }
+
+  private static Map<String, String> getEnvironmentVariables(Project project) {
+    var variables = new HashMap<String, String>();
+    var sopsSettingsState = SopsSettingsState.getInstance(project);
+
+    Optional.ofNullable(sopsSettingsState.getAwsProfile()).ifPresent(
+        profile -> variables.put(AWS_PROFILE_ENV, profile)
+    );
+
+    return variables;
   }
 }
