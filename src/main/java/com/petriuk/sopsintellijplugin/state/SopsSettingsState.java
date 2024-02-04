@@ -34,5 +34,4 @@ public final class SopsSettingsState implements PersistentStateComponent<SopsSet
   public void loadState(@NotNull SopsSettingsState state) {
     XmlSerializerUtil.copyBean(state, this);
   }
-
 }
